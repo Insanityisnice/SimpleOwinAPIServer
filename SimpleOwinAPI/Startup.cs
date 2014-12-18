@@ -19,9 +19,10 @@ namespace SimpleOwinAPI
 
         public Task JsonLookupHandler(IOwinContext context)
         {
-            //TODO: Load JSON File base on path and return file contents.
+            var pathStrings = context.Request.Path.Value.Split('/').Where(s => !String.IsNullOrWhiteSpace(s));
 
-            return context.Response.WriteAsync(context.Request.Path.ToString());
+            var result = pathStrings.Any() ? JsonFile.Load(pathStrings) : "Error";
+            return context.Response.WriteAsync(result);
         }
     }
 }
